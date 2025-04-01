@@ -22,6 +22,9 @@ public:
     char GenerateNumber();
     char GenerateSpecialSymbol();
 
+private slots:
+    void on_generatePassword_button_clicked();
+
 private:
     Ui::MainForm *ui;
 };

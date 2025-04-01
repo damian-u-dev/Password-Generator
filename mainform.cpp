@@ -11,6 +11,7 @@ MainForm::MainForm(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainForm)
 {
     ui->setupUi(this);
+    on_generatePassword_button_clicked();
 }
 
 MainForm::~MainForm()
@@ -22,10 +23,10 @@ MainForm::~MainForm()
 QString MainForm::GeneratePassword()
 {
     int countRandomSymbols = 0;
-    const int PLACE_HOLDER = 15;
+    const int passwordLength = ui->passwordLength_box->value();
     QString randomPassword;
 
-    while (countRandomSymbols != PLACE_HOLDER)
+    while (countRandomSymbols != passwordLength)
     {
         int randomChoice = g_distibution(g_engine) % 3;
 
@@ -72,3 +73,10 @@ char MainForm::GenerateSpecialSymbol()
 
     return specialSymbols[randomIndex];
 }
+
+void MainForm::on_generatePassword_button_clicked()
+{
+    const QString generatedPassword = GeneratePassword();
+    ui->generatedPassword_box->setText(generatedPassword);
+}
+
