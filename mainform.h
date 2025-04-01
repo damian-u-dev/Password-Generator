@@ -17,6 +17,11 @@ public:
     MainForm(QWidget *parent = nullptr);
     ~MainForm();
 
+    QString GeneratePassword();
+    char GenerateSymbol();
+    char GenerateNumber();
+    char GenerateSpecialSymbol();
+
 private:
     Ui::MainForm *ui;
 };
