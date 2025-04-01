@@ -1,6 +1,7 @@
 #include "mainform.h"
 #include "./ui_mainform.h"
 #include "QString"
+#include "QClipboard"
 #include "random"
 
 unsigned int seed = static_cast<unsigned int>(time(nullptr));
@@ -78,5 +79,13 @@ void MainForm::on_generatePassword_button_clicked()
 {
     const QString generatedPassword = GeneratePassword();
     ui->generatedPassword_box->setText(generatedPassword);
+}
+
+
+void MainForm::on_copyPasswordClipboard_button_clicked()
+{
+    QClipboard* clipboard = QGuiApplication::clipboard();
+    clipboard->setText(ui->generatedPassword_box->toPlainText());
+
 }
 

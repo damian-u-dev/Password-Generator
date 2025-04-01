@@ -25,6 +25,8 @@ public:
 private slots:
     void on_generatePassword_button_clicked();
 
+    void on_copyPasswordClipboard_button_clicked();
+
 private:
     Ui::MainForm *ui;
 };
