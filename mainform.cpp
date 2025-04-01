@@ -31,17 +31,17 @@ QString MainForm::GeneratePassword()
     {
         int randomChoice = g_distibution(g_engine) % 3;
 
-        if (randomChoice == 0)
+        if (ui->checkBox_Numbers->isChecked() && randomChoice == 0)
         {
             randomPassword += GenerateNumber();
         }
-        else if (randomChoice == 1)
+        else if (ui->checkBox_SpecialSymbols->isChecked() && randomChoice == 1)
         {
-            randomPassword += GenerateSymbol();
+            randomPassword += GenerateSpecialSymbol();
         }
         else
         {
-            randomPassword += GenerateSpecialSymbol();
+            randomPassword += GenerateSymbol();
         }
 
         countRandomSymbols++;
@@ -53,9 +53,13 @@ char MainForm::GenerateSymbol()
 {
     char randomSymbol = g_distibution(g_engine) % ('z' + 1 - 'a') + 'a';
 
-    bool toUpper = g_distibution(g_engine) % 2;
+    if(ui->checkBox_UpperSymbols->isChecked())
+    {
+        bool toUpper = g_distibution(g_engine) % 2;
 
-    return (toUpper) ? toupper(randomSymbol) : randomSymbol;
+        return (toUpper) ? toupper(randomSymbol) : randomSymbol;
+    }
+    return randomSymbol;
 }
 
 char MainForm::GenerateNumber()
