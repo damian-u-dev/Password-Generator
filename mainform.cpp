@@ -23,28 +23,38 @@ MainForm::~MainForm()
 
 QString MainForm::GeneratePassword()
 {
-    int countRandomSymbols = 0;
+    int countGeneratedSymbols = 0;
     const int passwordLength = ui->passwordLength_box->value();
     QString randomPassword;
 
-    while (countRandomSymbols != passwordLength)
+    int countOfNumbers = 0;
+    int countOfSpecialSymbols = 0;
+    int countOfUsualSymbols = passwordLength;
+
+    SetUpCountOfGeneration(countOfNumbers,countOfSpecialSymbols,countOfUsualSymbols,passwordLength);
+
+    while (countGeneratedSymbols != passwordLength)
     {
         int randomChoice = g_distibution(g_engine) % 3;
 
-        if (ui->checkBox_Numbers->isChecked() && randomChoice == 0)
+        if (ui->checkBox_Numbers->isChecked() && randomChoice == 0 && countOfNumbers > 0)
         {
             randomPassword += GenerateNumber();
+            countGeneratedSymbols++;
+            countOfNumbers--;
         }
-        else if (ui->checkBox_SpecialSymbols->isChecked() && randomChoice == 1)
+        else if (ui->checkBox_SpecialSymbols->isChecked() && randomChoice == 1 && countOfSpecialSymbols > 0)
         {
             randomPassword += GenerateSpecialSymbol();
+            countGeneratedSymbols++;
+            countOfSpecialSymbols--;
         }
-        else
+        else if(randomChoice == 2 && countOfUsualSymbols > 0)
         {
             randomPassword += GenerateSymbol();
+            countGeneratedSymbols++;
+            countOfUsualSymbols--;
         }
-
-        countRandomSymbols++;
     }
     return randomPassword;
 }
@@ -91,5 +101,41 @@ void MainForm::on_copyPasswordClipboard_button_clicked()
     QClipboard* clipboard = QGuiApplication::clipboard();
     clipboard->setText(ui->generatedPassword_box->toPlainText());
 
+}
+
+void MainForm::SetUpCountOfGeneration(int &countOfNumbers, int &countOfSpecialSymbols, int &countOfUsualSymbols, int passwordLength)
+{
+    if (ui->checkBox_Numbers->isChecked())
+    {
+        if (passwordLength <= 12)
+        {
+            countOfNumbers = g_distibution(g_engine) % 2 + 1;
+        }
+        else if (passwordLength > 12 && passwordLength < 24)
+        {
+            countOfNumbers = g_distibution(g_engine) % 4 + 2;
+        }
+        else if (passwordLength > 24)
+        {
+            countOfNumbers = g_distibution(g_engine) % 7 + 4;
+        }
+    }
+    if (ui->checkBox_SpecialSymbols->isChecked())
+    {
+        if (passwordLength <= 12)
+        {
+            countOfSpecialSymbols = g_distibution(g_engine) % 2 + 1;
+        }
+        else if (passwordLength > 12 && passwordLength < 24)
+        {
+            countOfSpecialSymbols = g_distibution(g_engine) % 4 + 2;
+        }
+        else if (passwordLength > 24)
+        {
+            countOfSpecialSymbols = g_distibution(g_engine) % 7 + 4;
+        }
+    }
+
+    countOfUsualSymbols -= countOfNumbers + countOfSpecialSymbols;
 }
 

@@ -29,5 +29,6 @@ private slots:
 
 private:
     Ui::MainForm *ui;
+    void SetUpCountOfGeneration(int& countOfNumbers, int& countOfSpecialSymbols, int& countOfUsualSymbols, int passwordLength);
 };
 #endif // MAINFORM_H
