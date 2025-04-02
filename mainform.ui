@@ -217,8 +217,23 @@
      <height>21</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuMenu">
+    <property name="title">
+     <string>Menu</string>
+    </property>
+    <addaction name="copyAfterGeneration_Menu"/>
+   </widget>
+   <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="copyAfterGeneration_Menu">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Copy after generation</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

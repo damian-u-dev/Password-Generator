@@ -93,6 +93,11 @@ void MainForm::on_generatePassword_button_clicked()
 {
     const QString generatedPassword = GeneratePassword();
     ui->generatedPassword_box->setText(generatedPassword);
+
+    if(ui->copyAfterGeneration_Menu->isChecked())
+    {
+        on_copyPasswordClipboard_button_clicked();
+    }
 }
 
 
