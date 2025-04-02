@@ -2,6 +2,8 @@
 #include "./ui_mainform.h"
 #include "QString"
 #include "QClipboard"
+#include "QDir"
+#include "QFile"
 #include "random"
 
 unsigned int seed = static_cast<unsigned int>(time(nullptr));
@@ -15,8 +17,32 @@ MainForm::MainForm(QWidget *parent)
     on_generatePassword_button_clicked();
 }
 
+void MainForm::SaveSettings()
+{
+    QDir settingsDirectory(MAIN_DIR);
+    if (!settingsDirectory.exists())
+        settingsDirectory.mkdir(MAIN_DIR);
+
+    SaveParameter(PATH_COPY_AFTER_GENERATION, (ui->copyAfterGeneration_Menu->isChecked() ? "true" : "false"));
+    SaveParameter(PATH_CHBOX_UPPER_SYMBOL, (ui->checkBox_UpperSymbols->isChecked() ? "true" : "false"));
+    SaveParameter(PATH_CHBOX_SPECIAL_SYMBOL, (ui->checkBox_SpecialSymbols->isChecked() ? "true" : "false"));
+    SaveParameter(PATH_CHBOX_NUMBERS, (ui->checkBox_Numbers->isChecked() ? "true" : "false"));
+
+    QString strNum = QString::number(ui->passwordLength_box->value());
+    SaveParameter(PATH_LAST_LENGTH_PASS, strNum.toUtf8().constData());
+}
+
+void MainForm::SaveParameter(const QString &Path, const char* text)
+{
+    QFile file(Path);
+    file.open(QIODevice::WriteOnly | QIODevice::Text);
+    file.write(text);
+    file.close();
+}
+
 MainForm::~MainForm()
 {
+    SaveSettings();
     delete ui;
 }
 
