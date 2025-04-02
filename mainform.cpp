@@ -14,7 +14,46 @@ MainForm::MainForm(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainForm)
 {
     ui->setupUi(this);
+    SetUpCheckboxes();
+    SetLastLength();
+
     on_generatePassword_button_clicked();
+}
+
+void MainForm::SetUpCheckboxes()
+{
+    QDir settingsDirectory(MAIN_DIR);
+    if (!settingsDirectory.exists())
+        settingsDirectory.mkdir(MAIN_DIR);
+
+    ui->copyAfterGeneration_Menu->setChecked(ReadFile(PATH_COPY_AFTER_GENERATION));
+    ui->checkBox_UpperSymbols->setChecked(ReadFile(PATH_CHBOX_UPPER_SYMBOL));
+    ui->checkBox_SpecialSymbols->setChecked(ReadFile(PATH_CHBOX_SPECIAL_SYMBOL));
+    ui->checkBox_Numbers->setChecked(ReadFile(PATH_CHBOX_NUMBERS));
+}
+
+void MainForm::SetLastLength()
+{
+    QFile file(PATH_LAST_LENGTH_PASS);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        ui->passwordLength_box->setValue(8);
+
+    char buf[10];
+    file.readLine(buf,sizeof(buf));
+    QString temp(buf);
+    ui->passwordLength_box->setValue(temp.toInt());
+
+}
+
+bool MainForm::ReadFile(const QString &Path)
+{
+    QFile file(Path);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    char buf[10];
+    file.readLine(buf, sizeof(buf));
+    return static_cast<bool>(!strcmp(buf,"true"));
 }
 
 void MainForm::SaveSettings()

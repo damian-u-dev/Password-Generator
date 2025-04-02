@@ -23,7 +23,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>MainForm</string>
+   <string>Password Generator</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="generatePassword_button">
@@ -80,6 +80,11 @@
       <width>341</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="font">
+     <font>
+      <bold>false</bold>
+     </font>
     </property>
     <property name="focusPolicy">
      <enum>Qt::FocusPolicy::StrongFocus</enum>

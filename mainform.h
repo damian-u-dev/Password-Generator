@@ -22,6 +22,10 @@ private:
     const QString PATH_LAST_LENGTH_PASS = R"(C:\ProgramData\PG\LastLengthPasswords.txt)";
 public:
     MainForm(QWidget *parent = nullptr);
+    void SetUpCheckboxes();
+    void SetLastLength();
+    bool ReadFile(const QString& Path);
+
     void SaveSettings();
     void SaveParameter(const QString& Path,const char* text);
     ~MainForm();
