@@ -103,19 +103,19 @@ QString MainForm::GeneratePassword()
     {
         int randomChoice = g_distibution(g_engine) % 3;
 
-        if (ui->checkBox_Numbers->isChecked() && randomChoice == 0 && countOfNumbers > 0)
+        if (ui->checkBox_Numbers->isChecked() && randomChoice == GenerationType::Number && countOfNumbers > 0)
         {
             randomPassword += GenerateNumber();
             countGeneratedSymbols++;
             countOfNumbers--;
         }
-        else if (ui->checkBox_SpecialSymbols->isChecked() && randomChoice == 1 && countOfSpecialSymbols > 0)
+        else if (ui->checkBox_SpecialSymbols->isChecked() && randomChoice == GenerationType::SpecialSymbol && countOfSpecialSymbols > 0)
         {
             randomPassword += GenerateSpecialSymbol();
             countGeneratedSymbols++;
             countOfSpecialSymbols--;
         }
-        else if(randomChoice == 2 && countOfUsualSymbols > 0)
+        else if(randomChoice == GenerationType::RegularSymbol && countOfUsualSymbols > 0)
         {
             char symbol = GenerateSymbol();
             if(isupper(symbol) && !wasOneUpper)

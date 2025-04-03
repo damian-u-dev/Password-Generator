@@ -14,6 +14,14 @@ class MainForm : public QMainWindow
     Q_OBJECT
 
 private:
+
+    enum GenerationType
+    {
+        Number,
+        RegularSymbol,
+        SpecialSymbol
+    };
+
     const QString MAIN_DIR = R"(C:\ProgramData\PG)";
     const QString PATH_COPY_AFTER_GENERATION = R"(C:\ProgramData\PG\CopyAfterGeneratePassword.txt)";
     const QString PATH_CHBOX_UPPER_SYMBOL = R"(C:\ProgramData\PG\CheckBoxUpperSymbol.txt)";
