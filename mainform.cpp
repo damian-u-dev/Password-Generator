@@ -45,7 +45,7 @@ void MainForm::SetLastLength()
 
 }
 
-bool MainForm::ReadFile(const QString &Path)
+bool MainForm::ReadFile(const QString &Path) const
 {
     QFile file(Path);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -56,7 +56,7 @@ bool MainForm::ReadFile(const QString &Path)
     return static_cast<bool>(!strcmp(buf,"true"));
 }
 
-void MainForm::SaveSettings()
+void MainForm::SaveSettings() const
 {
     QDir settingsDirectory(MAIN_DIR);
     if (!settingsDirectory.exists())
@@ -71,7 +71,7 @@ void MainForm::SaveSettings()
     SaveParameter(PATH_LAST_LENGTH_PASS, strNum.toUtf8().constData());
 }
 
-void MainForm::SaveParameter(const QString &Path, const char* text)
+void MainForm::SaveParameter(const QString &Path, const char* text) const
 {
     QFile file(Path);
     file.open(QIODevice::WriteOnly | QIODevice::Text);
@@ -86,58 +86,56 @@ MainForm::~MainForm()
 }
 
 
-QString MainForm::GeneratePassword()
+QString MainForm::GeneratePassword() const
 {
-    int countGeneratedSymbols = 0;
-    const int passwordLength = ui->passwordLength_box->value();
-    QString randomPassword;
+    const int PASSWORD_LENGTH = ui->passwordLength_box->value();
 
-    int countOfNumbers = 0;
-    int countOfSpecialSymbols = 0;
-    int countOfUsualSymbols = passwordLength;
+    int countNumbers = 0;
+    int countSpecialSymbols = 0;
+    int countRegularSymbols = PASSWORD_LENGTH;
+    SetUpCountOfGeneration(countNumbers, countSpecialSymbols, countRegularSymbols, PASSWORD_LENGTH);
 
-    SetUpCountOfGeneration(countOfNumbers,countOfSpecialSymbols,countOfUsualSymbols,passwordLength);
-
+    QString generatedPassword;
     bool wasOneUpper = false;
-    while (countGeneratedSymbols != passwordLength)
-    {
-        int randomChoice = g_distibution(g_engine) % 3;
+    int countGeneratedSymbols = 0;
 
-        if (ui->checkBox_Numbers->isChecked() && randomChoice == GenerationType::Number && countOfNumbers > 0)
+    while (countGeneratedSymbols != PASSWORD_LENGTH)
+    {
+        GenerationType generatedType = static_cast<GenerationType>(g_distibution(g_engine) % 3);
+
+        if (ui->checkBox_Numbers->isChecked() && generatedType == GenerationType::Number && countNumbers > 0)
         {
-            randomPassword += GenerateNumber();
+            generatedPassword += GenerateNumber();
             countGeneratedSymbols++;
-            countOfNumbers--;
+            countNumbers--;
         }
-        else if (ui->checkBox_SpecialSymbols->isChecked() && randomChoice == GenerationType::SpecialSymbol && countOfSpecialSymbols > 0)
+        else if (ui->checkBox_SpecialSymbols->isChecked() && generatedType == GenerationType::SpecialSymbol && countSpecialSymbols > 0)
         {
-            randomPassword += GenerateSpecialSymbol();
+            generatedPassword += GenerateSpecialSymbol();
             countGeneratedSymbols++;
-            countOfSpecialSymbols--;
+            countSpecialSymbols--;
         }
-        else if(randomChoice == GenerationType::RegularSymbol && countOfUsualSymbols > 0)
+        else if(generatedType == GenerationType::RegularSymbol && countRegularSymbols > 0)
         {
             char symbol = GenerateSymbol();
             if(isupper(symbol) && !wasOneUpper)
-            {
                 wasOneUpper = true;
-            }
 
-            if(ui->checkBox_UpperSymbols->isChecked() && (countOfUsualSymbols - 1) == 0 && !wasOneUpper)
+            if(ui->checkBox_UpperSymbols->isChecked() && (countRegularSymbols - 1) == 0 && !wasOneUpper)
             {
                 symbol = toupper(symbol);
                 wasOneUpper = true;
             }
 
-            randomPassword += symbol;
+            generatedPassword += symbol;
             countGeneratedSymbols++;
-            countOfUsualSymbols--;
+            countRegularSymbols--;
         }
     }
-    return randomPassword;
+    return generatedPassword;
 }
 
-char MainForm::GenerateSymbol()
+char MainForm::GenerateSymbol() const
 {
     char randomSymbol = g_distibution(g_engine) % ('z' + 1 - 'a') + 'a';
 
@@ -150,17 +148,15 @@ char MainForm::GenerateSymbol()
     return randomSymbol;
 }
 
-char MainForm::GenerateNumber()
+char MainForm::GenerateNumber() const
 {
     char randomNumber = g_distibution(g_engine) % ('9' + 1 - '0') + '0';
-
     return randomNumber;
 }
 
-char MainForm::GenerateSpecialSymbol()
+char MainForm::GenerateSpecialSymbol() const
 {
     char specialSymbols[] = { '!', '"', '#', '$', '%', '&', '(', ')', '*', '@', '_', '-', '=', '+' };
-
     int sizeArray = sizeof(specialSymbols);
     int randomIndex = g_distibution(g_engine) % sizeArray;
 
@@ -173,9 +169,7 @@ void MainForm::on_generatePassword_button_clicked()
     ui->generatedPassword_box->setText(generatedPassword);
 
     if(ui->copyAfterGeneration_Menu->isChecked())
-    {
         on_copyPasswordClipboard_button_clicked();
-    }
 }
 
 
@@ -186,39 +180,47 @@ void MainForm::on_copyPasswordClipboard_button_clicked()
 
 }
 
-void MainForm::SetUpCountOfGeneration(int &countOfNumbers, int &countOfSpecialSymbols, int &countOfUsualSymbols, int passwordLength)
+void MainForm::SetUpCountOfGeneration(int &countNumbers, int &countSpecialSymbols, int &countRegularSymbols, int passwordLength) const
 {
     if (ui->checkBox_Numbers->isChecked())
     {
         if (passwordLength <= 12)
         {
-            countOfNumbers = g_distibution(g_engine) % 2 + 1;
+            countNumbers = g_distibution(g_engine) % 2 + 1;
         }
         else if (passwordLength > 12 && passwordLength < 24)
         {
-            countOfNumbers = g_distibution(g_engine) % 4 + 2;
+            countNumbers = g_distibution(g_engine) % 4 + 2;
         }
         else if (passwordLength > 24)
         {
-            countOfNumbers = g_distibution(g_engine) % 7 + 4;
+            countNumbers = g_distibution(g_engine) % 7 + 4;
+        }
+
+        if(countNumbers == 0)
+        {
+            countNumbers = 2;
         }
     }
     if (ui->checkBox_SpecialSymbols->isChecked())
     {
         if (passwordLength <= 12)
         {
-            countOfSpecialSymbols = g_distibution(g_engine) % 2 + 1;
+            countSpecialSymbols = g_distibution(g_engine) % 2 + 1;
         }
         else if (passwordLength > 12 && passwordLength < 24)
         {
-            countOfSpecialSymbols = g_distibution(g_engine) % 4 + 2;
+            countSpecialSymbols = g_distibution(g_engine) % 4 + 2;
         }
         else if (passwordLength > 24)
         {
-            countOfSpecialSymbols = g_distibution(g_engine) % 7 + 4;
+            countSpecialSymbols = g_distibution(g_engine) % 7 + 4;
+        }
+
+        if(countSpecialSymbols == 0)
+        {
+            countSpecialSymbols = 2;
         }
     }
-
-    countOfUsualSymbols -= countOfNumbers + countOfSpecialSymbols;
+    countRegularSymbols -= countNumbers + countSpecialSymbols;
 }
-

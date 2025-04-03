@@ -14,7 +14,6 @@ class MainForm : public QMainWindow
     Q_OBJECT
 
 private:
-
     enum GenerationType
     {
         Number,
@@ -28,20 +27,22 @@ private:
     const QString PATH_CHBOX_SPECIAL_SYMBOL = R"(C:\ProgramData\PG\CheckBoxSpecialSymbol.txt)";
     const QString PATH_CHBOX_NUMBERS = R"(C:\ProgramData\PG\CheckBoxNumbers.txt)";
     const QString PATH_LAST_LENGTH_PASS = R"(C:\ProgramData\PG\LastLengthPasswords.txt)";
+
 public:
     MainForm(QWidget *parent = nullptr);
     void SetUpCheckboxes();
     void SetLastLength();
-    bool ReadFile(const QString& Path);
+    bool ReadFile(const QString& Path) const;
 
-    void SaveSettings();
-    void SaveParameter(const QString& Path,const char* text);
     ~MainForm();
+    void SaveSettings() const;
+    void SaveParameter(const QString& Path,const char* text) const;
 
-    QString GeneratePassword();
-    char GenerateSymbol();
-    char GenerateNumber();
-    char GenerateSpecialSymbol();
+    QString GeneratePassword() const;
+    void SetUpCountOfGeneration(int& countOfNumbers, int& countOfSpecialSymbols, int& countOfUsualSymbols, int passwordLength) const;
+    char GenerateSymbol() const;
+    char GenerateNumber() const;
+    char GenerateSpecialSymbol() const;
 
 private slots:
     void on_generatePassword_button_clicked();
@@ -50,6 +51,5 @@ private slots:
 
 private:
     Ui::MainForm *ui;
-    void SetUpCountOfGeneration(int& countOfNumbers, int& countOfSpecialSymbols, int& countOfUsualSymbols, int passwordLength);
 };
 #endif // MAINFORM_H
