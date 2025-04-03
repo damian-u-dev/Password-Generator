@@ -98,6 +98,7 @@ QString MainForm::GeneratePassword()
 
     SetUpCountOfGeneration(countOfNumbers,countOfSpecialSymbols,countOfUsualSymbols,passwordLength);
 
+    bool wasOneUpper = false;
     while (countGeneratedSymbols != passwordLength)
     {
         int randomChoice = g_distibution(g_engine) % 3;
@@ -116,7 +117,19 @@ QString MainForm::GeneratePassword()
         }
         else if(randomChoice == 2 && countOfUsualSymbols > 0)
         {
-            randomPassword += GenerateSymbol();
+            char symbol = GenerateSymbol();
+            if(isupper(symbol) && !wasOneUpper)
+            {
+                wasOneUpper = true;
+            }
+
+            if(ui->checkBox_UpperSymbols->isChecked() && (countOfUsualSymbols - 1) == 0 && !wasOneUpper)
+            {
+                symbol = toupper(symbol);
+                wasOneUpper = true;
+            }
+
+            randomPassword += symbol;
             countGeneratedSymbols++;
             countOfUsualSymbols--;
         }
