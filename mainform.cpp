@@ -1,9 +1,11 @@
 #include "mainform.h"
+#include "aboutpg.h"
 #include "./ui_mainform.h"
 #include "QString"
 #include "QClipboard"
 #include "QDir"
 #include "QFile"
+#include <QKeyEvent>
 #include "random"
 
 unsigned int seed = static_cast<unsigned int>(time(nullptr));
@@ -163,6 +165,15 @@ char MainForm::GenerateSpecialSymbol() const
     return specialSymbols[randomIndex];
 }
 
+void MainForm::keyPressEvent(QKeyEvent *event)
+{
+    if(event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_W)
+    {
+        close();
+    }
+    QMainWindow::keyPressEvent(event);
+}
+
 void MainForm::on_generatePassword_button_clicked()
 {
     const QString generatedPassword = GeneratePassword();
@@ -223,4 +234,12 @@ void MainForm::SetUpCountOfGeneration(int &countNumbers, int &countSpecialSymbol
         }
     }
     countRegularSymbols -= countNumbers + countSpecialSymbols;
+}
+
+void MainForm::on_actionAbout_triggered()
+{
+    AboutPG* form = new AboutPG(this);
+    form->setAttribute(Qt::WA_DeleteOnClose);
+    form->setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
+    form->exec();
 }

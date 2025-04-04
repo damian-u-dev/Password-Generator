@@ -44,10 +44,12 @@ public:
     char GenerateNumber() const;
     char GenerateSpecialSymbol() const;
 
+    virtual void keyPressEvent(QKeyEvent *event) override;
+
 private slots:
     void on_generatePassword_button_clicked();
-
     void on_copyPasswordClipboard_button_clicked();
+    void on_actionAbout_triggered();
 
 private:
     Ui::MainForm *ui;
