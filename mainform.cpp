@@ -7,9 +7,9 @@
 #include "QFile"
 #include <QKeyEvent>
 #include "random"
+#include <chrono>
 
-unsigned int seed = static_cast<unsigned int>(time(nullptr));
-std::mt19937 g_engine(seed);
+std::mt19937 g_engine(std::chrono::steady_clock::now().time_since_epoch().count());
 std::uniform_int_distribution<int> g_distibution;
 
 MainForm::MainForm(QWidget *parent)
@@ -158,7 +158,7 @@ char MainForm::GenerateNumber() const
 
 char MainForm::GenerateSpecialSymbol() const
 {
-    char specialSymbols[] = { '!', '"', '#', '$', '%', '&', '(', ')', '*', '@', '_', '-', '=', '+' };
+    const char specialSymbols[] = { '!', '"', '#', '$', '%', '&', '(', ')', '*', '@', '_', '-', '=', '+' };
     int sizeArray = sizeof(specialSymbols);
     int randomIndex = g_distibution(g_engine) % sizeArray;
 
