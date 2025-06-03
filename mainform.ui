@@ -22,8 +22,19 @@
     <height>358</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <italic>false</italic>
+    <bold>false</bold>
+    <underline>false</underline>
+    <strikeout>false</strikeout>
+   </font>
+  </property>
   <property name="windowTitle">
    <string>Password Generator</string>
+  </property>
+  <property name="windowIcon">
+   <iconset theme="QIcon::ThemeIcon::UserAvailable"/>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QPushButton" name="generatePassword_button">
@@ -39,7 +50,10 @@
      <font>
       <family>Comic Sans MS</family>
       <pointsize>10</pointsize>
+      <italic>false</italic>
       <bold>true</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
       <stylestrategy>PreferDefault</stylestrategy>
      </font>
     </property>
@@ -86,7 +100,10 @@
     </property>
     <property name="font">
      <font>
+      <italic>false</italic>
       <bold>false</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
      </font>
     </property>
     <property name="focusPolicy">
@@ -145,6 +162,9 @@
     <property name="maximum">
      <number>128</number>
     </property>
+    <property name="value">
+     <number>12</number>
+    </property>
    </widget>
    <widget class="QPushButton" name="copyPasswordClipboard_button">
     <property name="geometry">
@@ -159,7 +179,10 @@
      <font>
       <family>Comic Sans MS</family>
       <pointsize>10</pointsize>
+      <italic>false</italic>
       <bold>false</bold>
+      <underline>false</underline>
+      <strikeout>false</strikeout>
       <stylestrategy>PreferDefault</stylestrategy>
      </font>
     </property>
@@ -222,7 +245,7 @@
      <x>0</x>
      <y>0</y>
      <width>584</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuMenu">
@@ -231,10 +254,31 @@
     </property>
     <addaction name="copyAfterGeneration_Menu"/>
     <addaction name="actionAbout"/>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuMenu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="font">
+    <font>
+     <italic>false</italic>
+     <bold>false</bold>
+     <underline>false</underline>
+     <strikeout>false</strikeout>
+     <kerning>true</kerning>
+    </font>
+   </property>
+   <property name="windowTitle">
+    <string>toolBar</string>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+  </widget>
   <action name="copyAfterGeneration_Menu">
    <property name="checkable">
     <bool>true</bool>
@@ -246,6 +290,11 @@
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>

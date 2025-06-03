@@ -51,6 +51,8 @@ private slots:
     void on_copyPasswordClipboard_button_clicked();
     void on_actionAbout_triggered();
 
+    void on_actionExit_triggered();
+
 private:
     Ui::MainForm *ui;
 };

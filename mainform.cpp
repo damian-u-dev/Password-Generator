@@ -243,3 +243,9 @@ void MainForm::on_actionAbout_triggered()
     form->setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
     form->exec();
 }
+
+void MainForm::on_actionExit_triggered()
+{
+    this->close();
+}
+
